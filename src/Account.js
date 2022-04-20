@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
+import Select from "react-select";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
@@ -7,8 +8,12 @@ const Account = ({ session }) => {
   const [points, setPoints] = useState(0);
   const [client, setClient] = useState(true);
 
+  let userNames = [];
+
   useEffect(() => {
     getProfile();
+    getUserList();
+    console.log(session);
   }, [session]);
 
   const getProfile = async () => {
@@ -68,6 +73,25 @@ const Account = ({ session }) => {
     }
   };
 
+  const getUserList = async (users) => {
+    try {
+      let { data, error, status } = await supabase.from("profiles").select();
+
+      data.forEach((item, index) => {
+        if (data[index].userType !== "artist\r\n") {
+          userNames.push({
+            value: data[index].username,
+            label: data[index].username,
+          });
+        }
+        console.log("usernames", userNames);
+      });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+    }
+  };
+
   return (
     <div aria-live="polite">
       {loading ? (
@@ -96,7 +120,9 @@ const Account = ({ session }) => {
       ) : (
         <div>
           <p>This is the Artist Page!!!</p>
-    
+          <div>
+            <Select options={userNames} />
+          </div>
         </div>
       )}
 
