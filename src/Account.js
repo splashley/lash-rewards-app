@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Select from "react-select";
 
+import PointsBalance from "./components/PointsBalance";
+
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [points, setPoints] = useState(0);
   const [client, setClient] = useState(true);
-
-  let userNames = [];
+  const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     getProfile();
     getUserList();
-    console.log(session);
   }, [session]);
 
   const getProfile = async () => {
@@ -76,16 +76,11 @@ const Account = ({ session }) => {
   const getUserList = async (users) => {
     try {
       let { data, error, status } = await supabase.from("profiles").select();
-
-      data.forEach((item, index) => {
-        if (data[index].userType !== "artist\r\n") {
-          userNames.push({
-            value: data[index].username,
-            label: data[index].username,
-          });
-        }
-        console.log("usernames", userNames);
-      });
+      setUserList(
+        data
+          .filter(({ userType }) => userType !== "artist\r\n")
+          .map(({ username }) => ({ value: username, label: username }))
+      );
     } catch (error) {
       alert(error.message);
     } finally {
@@ -121,7 +116,7 @@ const Account = ({ session }) => {
         <div>
           <p>This is the Artist Page!!!</p>
           <div>
-            <Select options={userNames} />
+            <Select options={userList} />
           </div>
         </div>
       )}
