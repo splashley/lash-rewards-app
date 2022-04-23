@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Select from "react-select";
 
-import PointsBalance from "./components/PointsBalance";
-
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [points, setPoints] = useState(0);
   const [client, setClient] = useState(true);
   const [userList, setUserList] = useState([]);
+  const [clientName, setClientName] = useState(null);
+  const [showPoints, setShowPoints] = useState(false);
 
   useEffect(() => {
     getProfile();
@@ -87,6 +87,50 @@ const Account = ({ session }) => {
     }
   };
 
+  const displayPoints = async (user) => {
+    try {
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select("username, points");
+      data.forEach((element) => {
+        if (element.username === user.value) {
+          setPoints(element.points);
+          setClientName(user.value);
+        }
+      });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setShowPoints(true);
+    }
+  };
+
+  const addPoints = async () => {
+    try {
+      let { data, error } = await supabase
+        .from("profiles")
+        .update({ points: points + 1 })
+        .match({ username: clientName });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setPoints(points + 1);
+    }
+  };
+
+  const removePoints = async () => {
+    try {
+      let { data, error } = await supabase
+        .from("profiles")
+        .update({ points: points - 1 })
+        .match({ username: clientName });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setPoints(points - 1);
+    }
+  };
+
   return (
     <div aria-live="polite">
       {loading ? (
@@ -116,8 +160,23 @@ const Account = ({ session }) => {
         <div>
           <p>This is the Artist Page!!!</p>
           <div>
-            <Select options={userList} />
+            <Select options={userList} onChange={displayPoints} />
           </div>
+          {showPoints ? (
+            <div>
+              <p>Point Balance: {points}</p>
+              <div style={{ display: "flex" }}>
+                <div>
+                  <button onClick={removePoints}>-</button>
+                </div>
+                <div>
+                  <button onClick={addPoints}>+</button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       )}
 
