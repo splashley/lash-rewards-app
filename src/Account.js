@@ -52,7 +52,7 @@ const Account = ({ session }) => {
     try {
       setLoading(true);
       const user = supabase.auth.user();
-
+console.log(user);
       const updates = {
         id: user.id,
         username,
@@ -131,6 +131,15 @@ const Account = ({ session }) => {
     }
   };
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      borderBottom: '1px solid grey',
+      color: state.isSelected ? 'red' : 'black',
+      padding: 10,
+    })
+  }
+
   return (
     <div aria-live="polite">
       {loading ? (
@@ -151,16 +160,17 @@ const Account = ({ session }) => {
             <div>
               <p>Points Balance: {points}</p>
             </div>
-            <button className="button block primary" disabled={loading}>
+            <button className="button block primary button--custom" disabled={loading}>
               Update profile
             </button>
           </div>
         </form>
       ) : (
-        <div>
-          <p>This is the Artist Page!!!</p>
+        <div className="artist-page">
+          <h1 className="header">ROXYCILS & BEAUTÉ</h1>
+          <p>Search for a client</p>
           <div>
-            <Select options={userList} onChange={displayPoints} />
+            <Select styles={customStyles} options={userList} onChange={displayPoints} />
           </div>
           {showPoints ? (
             <div>
@@ -182,7 +192,7 @@ const Account = ({ session }) => {
 
       <button
         type="button"
-        className="button block"
+        className="button block button--custom"
         onClick={() => supabase.auth.signOut()}
       >
         Sign Out
