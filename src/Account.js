@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Select from "react-select";
 
+import "./index.css";
+
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
@@ -52,7 +54,7 @@ const Account = ({ session }) => {
     try {
       setLoading(true);
       const user = supabase.auth.user();
-console.log(user);
+      console.log(user);
       const updates = {
         id: user.id,
         username,
@@ -134,53 +136,69 @@ console.log(user);
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
-      borderBottom: '1px solid grey',
-      color: state.isSelected ? 'red' : 'black',
+      borderBottom: "1px solid grey",
+      color: state.isSelected ? "red" : "black",
       padding: 10,
-    })
-  }
+    }),
+  };
 
   return (
     <div aria-live="polite">
       {loading ? (
         "Saving ..."
       ) : client ? (
-        <form onSubmit={updateProfile} className="form-widget">
-          <div>Email: {session.user.email}</div>
-          <div>
-            <label htmlFor="username">Name</label>
-            <input
-              id="username"
-              type="text"
-              value={username || ""}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div>
+        <div>
+          <h1 className="header">ROXYCILS & BEAUTÉ</h1>
+          <hr classNAME="" />
+          <form onSubmit={updateProfile} className="form-widget">
+            <div>EMAIL: {session.user.email}</div>
             <div>
-              <p>Points Balance: {points}</p>
+              <label className="labelName" htmlFor="username">NAME:</label>
+              <input
+                id="username"
+                className="inputField"
+                type="text"
+                value={username || ""}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
-            <button className="button block primary button--custom" disabled={loading}>
-              Update profile
-            </button>
-          </div>
-        </form>
+            <div>
+              <div>
+                <p>Points Balance: {points}</p>
+              </div>
+              <button
+                className="button block primary btn__custom"
+                disabled={loading}
+              >
+                UPDATE PROFILE
+              </button>
+            </div>
+          </form>
+        </div>
       ) : (
         <div className="artist-page">
           <h1 className="header">ROXYCILS & BEAUTÉ</h1>
           <p>Search for a client</p>
           <div>
-            <Select styles={customStyles} options={userList} onChange={displayPoints} />
+            <Select
+              styles={customStyles}
+              options={userList}
+              onChange={displayPoints}
+            />
           </div>
           {showPoints ? (
             <div>
               <p>Point Balance: {points}</p>
               <div style={{ display: "flex" }}>
                 <div>
-                  <button onClick={removePoints}>-</button>
+                  <button className="btn btn__minus" onClick={removePoints}>
+                    -
+                  </button>
                 </div>
                 <div>
-                  <button onClick={addPoints}>+</button>
+                  <button className="btn btn__add" onClick={addPoints}>
+                    +
+                  </button>
                 </div>
               </div>
             </div>
@@ -192,10 +210,10 @@ console.log(user);
 
       <button
         type="button"
-        className="button block button--custom"
+        className="button block btn__custom"
         onClick={() => supabase.auth.signOut()}
       >
-        Sign Out
+        SIGN OUT
       </button>
     </div>
   );

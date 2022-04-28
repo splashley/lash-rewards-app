@@ -1,14 +1,19 @@
 @import url("https://use.typekit.net/buv8jvo.css");
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap");
 
 body {
-  margin: 0 auto;
-  font-family: 'Lato', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #001a5c;
-  color: #f4f4f4;
+  background-color: #f4f4f4;
+  color: #001a5c;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
 }
 
 h1 {
@@ -21,30 +26,60 @@ h1 {
 
 .container {
   margin: 0 auto;
-  padding: 50px 0;
+  padding: 20px 20px;
   display: flex;
   justify-content: center;
   width: 400px;
 }
 
 .inputField {
-  padding: 5px;
-  font-family: 'Lato', sans-serif;
+  padding: 8px;
+  font-family: "Lato", sans-serif;
   font-size: 1rem;
   border-radius: 3px;
   border: none;
   margin-right: 5px;
 }
 
-.button--custom {
-  padding: 6px;
-  font-family: 'Lato', sans-serif;
-  background-color: #a18763;
-  border: none;
-  font-size: 1rem;
-  border-radius: 3px;
+.labelName {
+  padding: 5px 0;
+}
+
+.description {
+  padding: 10px 0 0 0;
 }
 
 .artist-page {
   width: 100%;
+}
+
+.btn {
+  padding: 5px 20px;
+  width: 50px;
+  font-family: "Lato", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  border-radius: 3px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.btn__add {
+  background-color: #3df98a;
+  margin-left: 30px;
+}
+
+.btn__minus {
+  background-color: #f93d3d;
+}
+
+.btn__custom {
+  padding: 8px 15px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background-color: #a1876380;
+  border: none;
+  font-size: 1rem;
+  border-radius: 3px;
+  margin: 5px 0;
 }
